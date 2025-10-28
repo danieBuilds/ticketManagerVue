@@ -1,58 +1,69 @@
-<template>
-  <section id="signup">
-    <form @submit.prevent="handleSubmit" method="post">
-      <h1>Create your account</h1>
+import { useEffect, useState } from "react";
+import "../styles/signUp.css";
+import { useNavigate } from "react-router-dom";
+export default function SignUp() {
+    
+    const [user, setUser] = useState({
+        username: '',
+        email: '',
+        password: ''
+    });
 
-      <label for="username">Username</label>
-      <input id="username" name="username" type="text" v-model="user.username" required />
+    useEffect(() => {
+        localStorage.setItem("user", JSON.stringify(user));
+    }, [user])
 
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" v-model="user.email" required />
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setUser(prevUser => ({
+            ...prevUser,
+            [name]: value
+        }));
+    }
+    const navigate = useNavigate();
+    function handleSubmit(e) {
 
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" v-model="user.password" required />
+        e.preventDefault();
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/dashboard");
+    }
 
-      <p v-if="error" class="error" style="color: red;">{{ error }}</p>
+    return(
+        <>
+            <section id="signup">
 
-      <input type="submit" value="Sign Up" />
-    </form>
-  </section>
-</template>
-
-<script setup>
-import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-const user = reactive({ username: '', email: '', password: '' })
-const error = ref('')
-
-function handleSubmit() {
-  error.value = ''
-
-  if (!user.username.trim() || !user.email.trim() || !user.password.trim()) {
-    error.value = 'All fields are required'
-    return
-  }
-
-  // simple email check
-  if (!/^\S+@\S+\.\S+$/.test(user.email)) {
-    error.value = 'Please enter a valid email'
-    return
-  }
-
-  // persist
-  try {
-    localStorage.setItem('user', JSON.stringify(user))
-  } catch (e) {
-    error.value = 'Unable to save data locally'
-    return
-  }
-
-  router.push('/dashboard')
+             <form onSubmit={handleSubmit} method="post">
+                <h1>Create your account</h1>
+                <label htmlFor="username">Username</label>
+                <input 
+                    type="text" 
+                    name="username" 
+                    id="username" 
+                    value={user.username}
+                    onChange={handleChange}
+                    required 
+                />
+                <label htmlFor="email">Email</label>
+                <input 
+                    type="email" 
+                    name="email" 
+                    id="email" 
+                    value={user.email}
+                    onChange={handleChange}
+                    required 
+                />
+                <label htmlFor="password">Password</label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    value={user.password}
+                    onChange={handleChange}
+                    required 
+                />
+                <input type="submit" value="Sign Up" />
+            </form>
+            </section>
+        </>
+    )
 }
-</script>
-
-<style scoped>
-@import './signUp.css';
-</style>

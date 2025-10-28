@@ -1,52 +1,63 @@
-<template>
-  <section id="login">
-    <form @submit.prevent="handleSubmit">
-      <h1>Welcome!</h1>
-      <p v-if="error" class="error" style="color: red;">{{ error }}</p>
+import {useState, useEffect} from "react";
+import "../styles/login.css";
+import { useNavigate } from "react-router-dom";
+export default function Login() {
+    const [loginData, setLoginData] = useState({
+        username: '',
+        password: ''
+    });
+    const [error, setError] = useState('');
 
-      <label for="username">username</label>
-      <input
-        id="username"
-        name="username"
-        type="text"
-        v-model="loginData.username"
-        required
-      />
+    function handleChange(e) {
+        const {name, value} = e.target;
+        setLoginData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    }
 
-      <label for="password">password</label>
-      <input
-        id="password"
-        name="password"
-        type="password"
-        v-model="loginData.password"
-        required
-      />
+    const navigate = useNavigate();
+    function handleSubmit(e) {
+        e.preventDefault();
+        
+        const storedUser = JSON.parse(localStorage.getItem('user'));
 
-      <input type="submit" value="Login" />
-    </form>
-  </section>
-</template>
+        if (storedUser && 
+            storedUser.username === loginData.username && 
+            storedUser.password === loginData.password) {
 
-<script>
-import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+            navigate("/dashboard");
+        } else {
+        
+            setError('Invalid username or password');
+        }
+    }
 
-const router = useRouter()
-const loginData = reactive({
-  username: '',
-  password: ''
-})
-const error = ref('')
-
-function handleSubmit() {
-  error.value = ''
-  const stored = localStorage.getItem('user')
-  let storedUser = null
-
-  try {
-    storedUser = stored ? JSON.parse(stored) : null
-  } catch (e) {
-    storedUser = null
-  }
+    return(
+        <>
+            <section id="login">
+                <form action={handleSubmit} onSubmit={handleSubmit}>
+                    <h1>Welcome!</h1>
+                    {error && <p style={{color: 'red'}}>{error}</p>}
+                    <label htmlFor="username">username</label>
+                    <input 
+                        name="username" 
+                        type="text" 
+                        value={loginData.username}
+                        onChange={handleChange}
+                        required
+                    />
+                    <label htmlFor="password">password</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        value={loginData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input type="submit" value="Login" />
+                </form>
+            </section>
+        </>
+    )
 }
-</Script>
