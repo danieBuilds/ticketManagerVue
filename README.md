@@ -1,38 +1,45 @@
-# taskManager-vue
+# Ticket Manager App
 
-This template should help get you started developing with Vue 3 in Vite.
+A simple CRUD (Create, Read, Update, Delete) ticket management system built in React, Vue, and Twig (PHP).
+This project was created as part of the HNG Internship Stage 3 task to demonstrate CRUD operations with Local Storage and basic authentication simulation.
 
-## Recommended IDE Setup
+## 🚀 Frameworks & Libraries Used
+Vue Version
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Vue 3 (Vite)
 
-## Recommended Browser Setup
+Vue Router
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+CSS 
+## run locally
 
-## Customize configuration
+1. Clone the repository
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+git clone https://github.com/danieBuilds/ticketManagerVue.git
+cd ticketManagerVue
 
-## Project Setup
 
-```sh
+2. Install dependencies
+
 npm install
-```
 
-### Compile and Hot-Reload for Development
 
-```sh
+3. Run the project
+
 npm run dev
-```
 
-### Compile and Minify for Production
 
-```sh
-npm run build
+4. Open in your browser: http://localhost:5173
+---
+
+## Features
+
+Create, Read, Update, and Delete tickets
+
+Data persistence using Local Storage
+
+Basic simulated authentication
+
+Clean and responsive UI
+
 ```
