@@ -1,69 +1,59 @@
-import { useEffect, useState } from "react";
-import "../styles/signUp.css";
-import { useNavigate } from "react-router-dom";
-export default function SignUp() {
-    
-    const [user, setUser] = useState({
-        username: '',
-        email: '',
-        password: ''
-    });
+<template>
+  <div>
+    <section id="signup">
+      <form @submit="handleSubmit" method="post">
+        <h1>Create your account</h1>
+        <label for="username">Username</label>
+        <input 
+          type="text" 
+          name="username" 
+          id="username" 
+          v-model="user.username"
+          required 
+        />
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          name="email" 
+          id="email" 
+          v-model="user.email"
+          required 
+        />
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          name="password" 
+          id="password" 
+          v-model="user.password"
+          required 
+        />
+        <input type="submit" value="Sign Up" />
+      </form>
+    </section>
+  </div>
+</template>
 
-    useEffect(() => {
-        localStorage.setItem("user", JSON.stringify(user));
-    }, [user])
+<script setup>
+import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import '../styles/signUp.css';
 
-    function handleChange(e) {
-        const { name, value } = e.target;
-        setUser(prevUser => ({
-            ...prevUser,
-            [name]: value
-        }));
-    }
-    const navigate = useNavigate();
-    function handleSubmit(e) {
+const router = useRouter();
 
-        e.preventDefault();
-        localStorage.setItem("user", JSON.stringify(user));
-        navigate("/dashboard");
-    }
+const user = ref({
+  username: '',
+  email: '',
+  password: ''
+});
 
-    return(
-        <>
-            <section id="signup">
+// Watch for changes and update localStorage
+watch(user, (newUser) => {
+  localStorage.setItem("user", JSON.stringify(newUser));
+}, { deep: true });
 
-             <form onSubmit={handleSubmit} method="post">
-                <h1>Create your account</h1>
-                <label htmlFor="username">Username</label>
-                <input 
-                    type="text" 
-                    name="username" 
-                    id="username" 
-                    value={user.username}
-                    onChange={handleChange}
-                    required 
-                />
-                <label htmlFor="email">Email</label>
-                <input 
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    value={user.email}
-                    onChange={handleChange}
-                    required 
-                />
-                <label htmlFor="password">Password</label>
-                <input 
-                    type="password" 
-                    name="password" 
-                    id="password" 
-                    value={user.password}
-                    onChange={handleChange}
-                    required 
-                />
-                <input type="submit" value="Sign Up" />
-            </form>
-            </section>
-        </>
-    )
+function handleSubmit(e) {
+  e.preventDefault();
+  localStorage.setItem("user", JSON.stringify(user.value));
+  router.push("/dashboard");
 }
+</script>
