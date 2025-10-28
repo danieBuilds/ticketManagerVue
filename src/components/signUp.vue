@@ -36,9 +36,11 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useToast } from '../composables/useToast';
 import '../styles/signUp.css';
 
 const router = useRouter();
+const { success } = useToast();
 
 const user = ref({
   username: '',
@@ -54,6 +56,7 @@ watch(user, (newUser) => {
 function handleSubmit(e) {
   e.preventDefault();
   localStorage.setItem("user", JSON.stringify(user.value));
+  success('Account created successfully! Welcome to tickHandler.');
   router.push("/dashboard");
 }
 </script>

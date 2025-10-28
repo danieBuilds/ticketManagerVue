@@ -1,10 +1,12 @@
 <template>
-  <router-view />
+  <div>
+    <router-view />
+    <ToastContainer />
+  </div>
 </template>
 
 <script setup>
-// No imports or logic needed
-// router-view is a built-in Vue Router component
+import ToastContainer from './components/ToastContainer.vue';
 </script>
 
 <style>

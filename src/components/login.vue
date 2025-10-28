@@ -3,7 +3,6 @@
     <section id="login">
       <form @submit="handleSubmit">
         <h1>Welcome!</h1>
-        <p v-if="error" style="color: red">{{ error }}</p>
         <label for="username">username</label>
         <input 
           name="username" 
@@ -27,16 +26,16 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useToast } from '../composables/useToast';
 import '../styles/login.css';
 
 const router = useRouter();
+const { success, error } = useToast();
 
 const loginData = ref({
   username: '',
   password: ''
 });
-
-const error = ref('');
 
 function handleSubmit(e) {
   e.preventDefault();
@@ -46,9 +45,10 @@ function handleSubmit(e) {
   if (storedUser && 
       storedUser.username === loginData.value.username && 
       storedUser.password === loginData.value.password) {
+    success('Login successful! Welcome back.');
     router.push("/dashboard");
   } else {
-    error.value = 'Invalid username or password';
+    error('Invalid username or password. Please try again.');
   }
 }
 </script>
